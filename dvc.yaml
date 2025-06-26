@@ -4,6 +4,11 @@ stages:
     deps:
     - data/raw/houses.csv
     - src/train.py
+    params:
+    - data.features
+    - data.target
+    - model.alpha
+    - model.name
     outs:
     - models/house_predictor.joblib
     metrics:

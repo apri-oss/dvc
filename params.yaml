@@ -1,0 +1,10 @@
+model:
+  name: linear_regression
+  alpha: 1
+
+data:
+  target: price
+  features:
+    - size
+    - bedrooms
+    

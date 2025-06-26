@@ -1,30 +1,43 @@
 import pandas as pd
-from sklearn.linear_model import LinearRegression
 import joblib
 import json
-import sys
+import yaml
+from sklearn.linear_model import Ridge 
 
-# 1. Load data
+# 1. Load params.yaml
+with open("params.yaml") as f:
+    params = yaml.safe_load(f)
+
+model_name = params["model"]["name"]
+alpha = params["model"]["alpha"]
+features = params["data"]["features"]
+target = params["data"]["target"]
+
+# 2. Load data
 data_path = "data/raw/houses.csv"
 df = pd.read_csv(data_path)
 
-# 2. Preprocessing
-X = df[['size', 'bedrooms']]
-y = df['price']
+# 3. Preprocessing
+X = df[features]
+y = df[target]
 
-# 3. Train model
-model = LinearRegression()
+# 4. Train model
+if model_name == "linear_regression":
+    model = Ridge(alpha=alpha)  # Ridge bisa menerima alpha
+else:
+    raise ValueError(f"Unsupported model: {model_name}")
+
 model.fit(X, y)
 
-# 4. Save model
+# 5. Save model
 model_path = "models/house_predictor.joblib"
 joblib.dump(model, model_path)
 
-# 5. Evaluate
+# 6. Evaluate
 score = model.score(X, y)
 metrics = {"r2_score": score}
 
-# 6. Save metrics
+# 7. Save metrics
 with open("metrics.json", "w") as f:
     json.dump(metrics, f)
 
