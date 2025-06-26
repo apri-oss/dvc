@@ -1,0 +1,11 @@
+stages:
+  train:
+    cmd: python src/train.py
+    deps:
+    - data/raw/houses.csv
+    - src/train.py
+    outs:
+    - models/house_predictor.joblib
+    metrics:
+    - metrics.json:
+        cache: false
